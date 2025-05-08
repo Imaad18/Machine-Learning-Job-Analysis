@@ -30,5 +30,18 @@
 * Interactive line charts and heatmaps
 
 
+# Setup & Instalments:
 
+# Clone Repository:
+
+git clone https://github.com/your-username/ml-jobs-dashboard.git
+cd ml-jobs-dashboard
+
+# Install required Packages
+
+pip install -r requirements.txt
+
+# Run App
+
+streamlit run app.py
 
