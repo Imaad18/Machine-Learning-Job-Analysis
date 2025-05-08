@@ -31,28 +31,4 @@
 
 
 
-🛠️ Installation & Setup
-1. Clone the Repository
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/ml-jobs-analysis-dashboard.git
-cd ml-jobs-analysis-dashboard
-2. Install Required Packages
-Ensure Python 3.7+ is installed. Then run:
 
-bash
-Copy
-Edit
-pip install -r requirements.txt
-If requirements.txt is not available, install manually:
-
-bash
-Copy
-Edit
-pip install streamlit pandas matplotlib seaborn plotly
-3. Run the Streamlit App
-bash
-Copy
-Edit
-streamlit run app.py
