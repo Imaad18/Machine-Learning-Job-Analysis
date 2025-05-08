@@ -114,27 +114,52 @@ if st.session_state.data_loaded:
         
         # Heatmap: Jobs by Month and Weekday
         st.subheader("Heat Map: Job Postings by Weekday and Month")
-        heatmap_data = df.groupby(["month", "weekday"]).size().reset_index(name='count')
-        pivot_table = heatmap_data.pivot("weekday", "month", "count").reindex(index=weekday_order, columns=month_order)
-        
-        fig, ax = plt.subplots(figsize=(14, 8))
-        sns.heatmap(pivot_table, annot=True, fmt='g', cmap="YlGnBu", ax=ax)
-        plt.tight_layout()
-        st.pyplot(fig)
+        try:
+            heatmap_data = df.groupby(["month", "weekday"]).size().reset_index(name='count')
+            
+            # Check if we have enough data for a meaningful heatmap
+            if len(heatmap_data) > 5:  # Arbitrary threshold
+                # Create pivot table with error handling for missing combinations
+                pivot_table = pd.DataFrame(index=weekday_order, columns=month_order).fillna(0)
+                
+                # Fill in available data
+                for _, row in heatmap_data.iterrows():
+                    if row['weekday'] in weekday_order and row['month'] in month_order:
+                        pivot_table.at[row['weekday'], row['month']] = row['count']
+                
+                fig, ax = plt.subplots(figsize=(14, 8))
+                sns.heatmap(pivot_table, annot=True, fmt='g', cmap="YlGnBu", ax=ax)
+                plt.tight_layout()
+                st.pyplot(fig)
+            else:
+                st.warning("Not enough data available for a meaningful weekday-month heatmap.")
+        except Exception as e:
+            st.error(f"Unable to create heatmap. Error: {str(e)}")
+            st.info("This usually happens when there's not enough data across different months and weekdays.")
         
         # Trend Over Time (Interactive)
         st.subheader("Job Posting Trend Over Time")
-        monthly_trend = df['job_posted_date'].dt.to_period('M').value_counts().sort_index()
-        monthly_trend.index = monthly_trend.index.astype(str)
-        
-        fig = px.line(
-            x=monthly_trend.index, 
-            y=monthly_trend.values,
-            labels={'x': 'Month', 'y': 'Number of Jobs'},
-            title='Monthly Job Posting Trend'
-        )
-        fig.update_traces(mode="lines+markers")
-        st.plotly_chart(fig, use_container_width=True)
+        try:
+            if df['job_posted_date'].notna().any():
+                monthly_trend = df['job_posted_date'].dt.to_period('M').value_counts().sort_index()
+                monthly_trend.index = monthly_trend.index.astype(str)
+                
+                if not monthly_trend.empty:
+                    fig = px.line(
+                        x=monthly_trend.index, 
+                        y=monthly_trend.values,
+                        labels={'x': 'Month', 'y': 'Number of Jobs'},
+                        title='Monthly Job Posting Trend'
+                    )
+                    fig.update_traces(mode="lines+markers")
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.warning("No time data available for trend visualization.")
+            else:
+                st.warning("No valid dates found in the data for trend analysis.")
+        except Exception as e:
+            st.error(f"Unable to create trend chart. Error: {str(e)}")
+            st.info("Please check that the 'job_posted_date' column contains valid dates.")
         
     elif page == "Location & Companies":
         st.header("Top Locations and Companies")
