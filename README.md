@@ -40,14 +40,19 @@ https://machine-learning-job-analysis-pg6qubtk5y9h9p3h4zsnbi.streamlit.app/
 
 # Clone Repository:
 
+```bash
 git clone https://github.com/your-username/ml-jobs-dashboard.git
 cd ml-jobs-dashboard
+```
 
 # Install required Packages
 
+```bash
 pip install -r requirements.txt
+```
 
 # Run App
 
+```bash
 streamlit run app.py
-
+```
