@@ -14,6 +14,45 @@ st.set_page_config(
     layout="wide"
 )
 
+# Inject stylish CSS with fresh colors (sunset gradient + glass panels)
+st.markdown("""
+<style>
+    body, .stApp {
+        background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+        background-attachment: fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', sans-serif;
+        color: #2d3436;
+    }
+    .css-1aumxhk, .stExpander > div > div {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(8px);
+        border-radius: 15px;
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .stButton>button {
+        background: #fd7272;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        transition: 0.3s ease-in-out;
+    }
+    .stButton>button:hover {
+        background: #e55039;
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(253, 114, 114, 0.5);
+    }
+    .block-container {
+        padding: 2rem 3rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
 # Title and description
 st.title("Machine Learning Jobs Analysis Dashboard")
 st.markdown("This dashboard analyzes trends in ML job postings across the US.")
